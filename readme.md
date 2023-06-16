@@ -8,8 +8,15 @@
     	src="https://img.shields.io/badge/npm-9.5.1-brightgreen.svg"></a>
     <a href="#"><img
     	alt="size of repository"
-    	src="https://img.shields.io/badge/Size-687%20KB-yellowgreen.svg"></a>
-    c
+    	src="https://img.shields.io/github/size/AnarbekovAlt/react-whatsapp/https://github.com/AnarbekovAlt/%7Brepository%7D"></a>
+    <a href="https://badges.mit-license.org/" target="_blank"><img
+    	alt="licence"
+    	src="https://img.shields.io/packagist/l/doctrine/orm.svg">
+	</a>
+    <a href="#" target="_blank"><img
+    	alt="Javascript percentage"
+    	src="https://img.shields.io/badge/Javascript-71.2%25-yellow.svg">
+	</a>
 </p>
 
 ## Features
