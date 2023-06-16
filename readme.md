@@ -1,6 +1,6 @@
 <div align="center">
  <h1 size="+2">React Whatsapp</h1>
- <h4><i>A whatsapp clone built using React</i></h4>
+ <h4><i>A whatsapp clone built using React and Green API. </i></h4>
 
  <p align="center">
     <a href="https://www.npmjs.com/package/npm/v/9.5.1" target="_blank"><img
@@ -8,44 +8,34 @@
     	src="https://img.shields.io/badge/npm-9.5.1-brightgreen.svg"></a>
     <a href="#"><img
     	alt="size of repository"
-    	src="https://img.shields.io/github/size/AnarbekovAlt/react-whatsapp/https://github.com/AnarbekovAlt/%7Brepository%7D"></a>
-    <a href="https://badges.mit-license.org/" target="_blank"><img
-    	alt="licence"
-    	src="https://img.shields.io/packagist/l/doctrine/orm.svg">
-	</a>
-    <a href="#" target="_blank"><img
-    	alt="Javascript percentage"
-    	src="https://img.shields.io/badge/Javascript-71.2%25-yellow.svg">
-	</a>
+    	src="https://img.shields.io/badge/Size-687%20KB-yellowgreen.svg"></a>
+    c
 </p>
-<br>
- <img src="https://github.com/devrod/readme-images/blob/master/typing-screenshot.png?raw=true" width="700" alt="landing page scroll animation">
-</div>
-<br>
 
-## Objective
+## Features
 
-Become more familiar with using React.js and building Single-page-applications.
+In order to use the app you must be get idInstance and apiTokenInstance from Green API:
+<a href="https://green-api.com/" target="_blank">
+Green API
+</a>
 
-## Functionality
-
-- Practice text, numbers, or symbols
-- Measure words-per-minute and accurate
-- Show keys to press on screen so you don't have to look at hands
-- Results component and keyboard showing incorrect keys
-- Option to generate based of your most incorrect keys or keys of your choice
+- Design of the app is very similar to whatsapp web
+- Login using your idInstance and apiTokenInstance
+- Create a chat by writing a phone number you want to chat with
+- Send a message and it will be sent to whatsapp number you added. Also receive messages from that number
+- You login data is saved in localStorage so that you don't have to login again every time you visti the page. Saved login data is deleted on logout.
 
 ## Live Website
 
-https://rodneycumming.github.io/react-typing/ :zap:
+https:// :zap:
 
 ## Author
 
-- Rodney Cumming - RodneyCumming@gmail.com :email:
+- Anarbekov ALtynbek - altynbek290697@gmail.com :email:
 
 ## License
 
 [![License](https://img.shields.io/packagist/l/doctrine/orm.svg)](http://badges.mit-license.org)
 
 - **[MIT license](http://badges.mit-license.org)**
-- Copyright 2018 © <a href="http://fvcproductions.com" target="_blank">Rodney Cumming</a>.
+- Copyright 2023 © <a href="https://react-portfolio-altyn.netlify.app/" target="_blank">Anarbekov Altynbek</a>.

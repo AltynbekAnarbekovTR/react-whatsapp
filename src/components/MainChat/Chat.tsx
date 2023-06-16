@@ -15,23 +15,21 @@ import "./Chat.css";
 
 const Chat = () => {
   const [message, setInput] = useState("");
-  const [seed, setSeed] = useState("");
+
   const { currentChatNum } = useParams();
   const chats = useAppSelector((state) => state.chats);
   const pending = useAppSelector((state) => state.pending);
   const currentChat = chats.find(
     (chat) => chat.chatPhoneNum === currentChatNum
   );
+  const avatarUrl = currentChat?.avatarUrl;
+
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    setSeed(Math.floor(Math.random() * 5000).toString());
-  }, []);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (!pending) {
       interval = setInterval(() => {
-        console.log("pending: ", pending);
         dispatch(receiveMessage());
       }, 1000);
     }
@@ -49,9 +47,7 @@ const Chat = () => {
   return (
     <div className="chat">
       <div className="chat_header">
-        <Avatar
-          src={`https://avatars.dicebear.com/api/adventurer-neutral/${seed}.svg`}
-        />
+        <Avatar src={avatarUrl} />
         <div className="chat_headerInfo">
           <h3 className="chat-room-name">{currentChatNum}</h3>
           <p className="chat-room-last-seen">Last seen </p>

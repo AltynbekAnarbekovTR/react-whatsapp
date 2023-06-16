@@ -63,11 +63,8 @@ export const sendMessage = createAsyncThunk(
 export const receiveMessage = createAsyncThunk(
   "messenger/receiveMessage",
   async (params, thunkApi) => {
-    console.log("receiveMessage TC Start");
-
     try {
       const state = thunkApi.getState() as RootStateType;
-      console.log("state.pending: ", state.pending);
 
       const response = await fetch(
         `https://api.green-api.com/waInstance${state.idInstance}/receiveNotification/${state.apiTokenInstance}`
@@ -94,7 +91,6 @@ export const receiveMessage = createAsyncThunk(
           return { chatId, id: receiptId, message, messageTime };
         }
       }
-      console.log("receiveMessage TC End");
     } catch (error) {
       console.log("error: ", error);
     }
@@ -107,8 +103,19 @@ const messengerSlice = createSlice({
   initialState,
   reducers: {
     addChat: (state, action) => {
-      if (!state.chats.find((chat) => chat.chatPhoneNum === action.payload)) {
-        state.chats.push({ chatPhoneNum: action.payload, messages: [] });
+      if (
+        !state.chats.find(
+          (chat) => chat.chatPhoneNum === action.payload.phoneNumInput
+        )
+      ) {
+        const seed = Math.floor(Math.random() * 5000);
+        const avatarUrl = `https://avatars.dicebear.com/api/adventurer-neutral/${seed}.svg`;
+
+        state.chats.push({
+          chatPhoneNum: action.payload.phoneNumInput,
+          avatarUrl,
+          messages: [],
+        });
       }
     },
     logout: (state) => {
@@ -203,6 +210,7 @@ type MessengerStateType = {
 
 type ChatType = {
   chatPhoneNum: string;
+  avatarUrl: string;
   messages: Array<MessageType>;
 };
 
