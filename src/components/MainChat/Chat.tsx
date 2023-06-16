@@ -1,47 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Button, IconButton } from "@mui/material";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import MicIcon from "@mui/icons-material/Mic";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-import "./Chat.css";
 import { useParams } from "react-router-dom";
-import { useStateValue } from "../../StateProvider";
-import axios from "axios";
-import { useAppDispatch, useAppSelector } from "../../hooks/typedStoreHooks";
+import { Avatar, IconButton } from "@mui/material";
 import {
-  messengerActions,
-  receiveMessage,
-  sendMessage,
-} from "../../store/store";
+  AttachFile,
+  MoreVert,
+  SearchOutlined,
+  Mic,
+  InsertEmoticon,
+} from "@mui/icons-material";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { MessageType, receiveMessage, sendMessage } from "../../store/store";
+import "./Chat.css";
 
-function Chat() {
+const Chat = () => {
   const [message, setInput] = useState("");
   const [seed, setSeed] = useState("");
   const { currentChatNum } = useParams();
   const chats = useAppSelector((state) => state.chats);
+  const pending = useAppSelector((state) => state.pending);
   const currentChat = chats.find(
     (chat) => chat.chatPhoneNum === currentChatNum
   );
-  console.log("Here1");
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000).toString());
-    // }, [roomId]);
   }, []);
 
   useEffect(() => {
-    console.log("Here2");
-
-    const interval = setInterval(() => {
-      dispatch(receiveMessage());
-      return () => clearInterval(interval);
-    }, 2000);
-    dispatch(receiveMessage());
+    let interval: NodeJS.Timeout;
+    if (!pending) {
+      interval = setInterval(() => {
+        console.log("pending: ", pending);
+        dispatch(receiveMessage());
+      }, 1000);
+    }
     return () => clearInterval(interval);
-  }, []);
+  }, [pending]);
 
   const sendMessageHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,58 +49,42 @@ function Chat() {
   return (
     <div className="chat">
       <div className="chat_header">
-        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+        <Avatar
+          src={`https://avatars.dicebear.com/api/adventurer-neutral/${seed}.svg`}
+        />
         <div className="chat_headerInfo">
-          <h3 className="chat-room-name">
-            {/* {roomName} */}
-            {/* Room Name */}
-            {currentChatNum}
-          </h3>
-          <p className="chat-room-last-seen">
-            Last seen{" "}
-            {/* {new Date(
-              messages[messages.length - 1]?.timestamp?.toDate()
-            ).toUTCString()} */}
-          </p>
+          <h3 className="chat-room-name">{currentChatNum}</h3>
+          <p className="chat-room-last-seen">Last seen </p>
         </div>
         <div className="chat_headerRight">
           <IconButton>
-            <SearchOutlinedIcon />
+            <SearchOutlined />
           </IconButton>
           <IconButton>
-            <AttachFileIcon />
+            <AttachFile />
           </IconButton>
           <IconButton>
-            <MoreVertIcon />
+            <MoreVert />
           </IconButton>
         </div>
       </div>
       <div className="chat_body">
-        {/* <Button onClick={recieveMessageHandler}>Recieve message</Button> */}
         {currentChat &&
-          currentChat.messages.map((message) => (
+          currentChat.messages.map((message: MessageType) => (
             <div
               key={message.id}
               className={`chat_message ${
                 message.sentByOwner && "chat_receiver"
               }`}
             >
-              <span className="chat_name">
-                {/* {message.name} */}
-                {/* Sender */}
-                {/* {currentChatNum} */}
-              </span>
+              <span className="chat_name"></span>
               {message.message}
-              <p className="chat_timestamp">
-                {/* {new Date(message.timestamp?.toDate()).toUTCString()} */}
-                {/* Date */}
-                {message.messageTime}
-              </p>
+              <p className="chat_timestamp">{message.messageTime}</p>
             </div>
           ))}
       </div>
       <div className="chat_footer">
-        <InsertEmoticonIcon />
+        <InsertEmoticon />
         <form>
           <input
             value={message}
@@ -118,10 +97,10 @@ function Chat() {
             Send a Message
           </button>
         </form>
-        <MicIcon />
+        <Mic />
       </div>
     </div>
   );
-}
+};
 
 export default Chat;

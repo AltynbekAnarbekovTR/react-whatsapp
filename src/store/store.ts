@@ -5,9 +5,9 @@ import {
   SerializedError,
   createSelector,
 } from "@reduxjs/toolkit";
-import { loadState } from "../utils/localStorage-utils";
+import { getSavedAuth, saveAuth } from "../utils/localStorage-utils";
 
-const { idInstance, apiTokenInstance, ownerPhoneNum } = loadState();
+const { idInstance, apiTokenInstance, ownerPhoneNum } = getSavedAuth();
 
 const initialState: MessengerStateType = {
   idInstance,
@@ -15,15 +15,15 @@ const initialState: MessengerStateType = {
   chats: [],
   error: null,
   ownerPhoneNum,
-  // loggedIn: false,
+  pending: false,
 };
 
 const getTime = (date: Date) => {
-  const day = date.getDate(); // Get the day (1-31)
-  const month = date.getMonth() + 1; // Get the month (0-11) and add 1 to make it 1-12
-  const year = date.getFullYear(); // Get the four-digit year
-  const hours = date.getHours(); // Get the hours (0-23)
-  const minutes = date.getMinutes(); // Get the minutes (0-59)
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
 
   const formattedTime = `${day}/${month}/${year} ${hours}:${minutes}`;
   return formattedTime;
@@ -31,14 +31,11 @@ const getTime = (date: Date) => {
 
 export const login = createAsyncThunk(
   "messenger/login",
-  async ({ idInstance, apiTokenInstance }: LoginType, thunkApi) => {
-    const state = thunkApi.getState() as RootStateType;
+  async ({ idInstance, apiTokenInstance }: LoginType) => {
     const response = await fetch(
-      `https://api.green-api.com/waInstance${idInstance}/getSettings/${apiTokenInstance}`
+      `https:api.green-api.com/waInstance${idInstance}/getSettings/${apiTokenInstance}`
     );
     const data = await response.json();
-    console.log(data);
-
     const ownerPhoneNum = "+" + data.wid.replace(/\D/g, "");
     return { idInstance, apiTokenInstance, ownerPhoneNum };
   }
@@ -48,7 +45,7 @@ export const sendMessage = createAsyncThunk(
   "messenger/sendMessage",
   async ({ currentChatNumber, message }: SendMessageType, thunkApi) => {
     const state = thunkApi.getState() as RootStateType;
-    const response = await fetch(
+    await fetch(
       `https://api.green-api.com/waInstance${state.idInstance}/sendMessage/${state.apiTokenInstance}`,
       {
         method: "POST",
@@ -59,9 +56,6 @@ export const sendMessage = createAsyncThunk(
         }),
       }
     );
-
-    const data = await response.json();
-    // data = data.join("").replace(/\s{2,}/g, " ");
     return { currentChatNumber, message };
   }
 );
@@ -69,17 +63,18 @@ export const sendMessage = createAsyncThunk(
 export const receiveMessage = createAsyncThunk(
   "messenger/receiveMessage",
   async (params, thunkApi) => {
+    console.log("receiveMessage TC Start");
+
     try {
       const state = thunkApi.getState() as RootStateType;
+      console.log("state.pending: ", state.pending);
+
       const response = await fetch(
         `https://api.green-api.com/waInstance${state.idInstance}/receiveNotification/${state.apiTokenInstance}`
       );
-      console.log("response.ok: ", response.ok);
       const data = await response.json();
-      console.log("received message: ", data);
       if (data) {
         const timestamp = data.body.timestamp;
-        // const messageTime = new Date(timestamp * 1000).toLocaleString();
         const messageTime = getTime(new Date(timestamp * 1000));
         if (data?.receiptId) {
           const receiptId = data?.receiptId.toString();
@@ -99,6 +94,7 @@ export const receiveMessage = createAsyncThunk(
           return { chatId, id: receiptId, message, messageTime };
         }
       }
+      console.log("receiveMessage TC End");
     } catch (error) {
       console.log("error: ", error);
     }
@@ -111,11 +107,7 @@ const messengerSlice = createSlice({
   initialState,
   reducers: {
     addChat: (state, action) => {
-      if (
-        !state.chats.find((chat) => {
-          chat.chatPhoneNum === action.payload;
-        })
-      ) {
+      if (!state.chats.find((chat) => chat.chatPhoneNum === action.payload)) {
         state.chats.push({ chatPhoneNum: action.payload, messages: [] });
       }
     },
@@ -144,6 +136,10 @@ const messengerSlice = createSlice({
       .addCase(sendMessage.rejected, (state, action) => {
         state.error = action.error;
       })
+      .addCase(receiveMessage.pending, (state) => {
+        state.pending = true;
+        state.error = null;
+      })
       .addCase(receiveMessage.fulfilled, (state, action) => {
         if (action.payload) {
           const chatIndex = state.chats.findIndex(
@@ -159,15 +155,20 @@ const messengerSlice = createSlice({
           }
         }
         state.error = null;
+        state.pending = false;
       })
       .addCase(receiveMessage.rejected, (state, action) => {
         state.error = action.error;
+        state.pending = false;
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.idInstance = action.payload.idInstance;
-        state.apiTokenInstance = action.payload.apiTokenInstance;
-        state.ownerPhoneNum = action.payload.ownerPhoneNum;
-        // state.loggedIn = true;
+        const idInstance = action.payload.idInstance;
+        const apiTokenInstance = action.payload.apiTokenInstance;
+        const ownerPhoneNum = action.payload.ownerPhoneNum;
+        state.idInstance = idInstance;
+        state.apiTokenInstance = apiTokenInstance;
+        state.ownerPhoneNum = ownerPhoneNum;
+        saveAuth(idInstance, apiTokenInstance, ownerPhoneNum);
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
@@ -197,7 +198,7 @@ type MessengerStateType = {
   chats: Array<ChatType>;
   error: SerializedError | null;
   ownerPhoneNum: string | null;
-  // loggedIn: boolean;
+  pending: boolean;
 };
 
 type ChatType = {
@@ -205,7 +206,7 @@ type ChatType = {
   messages: Array<MessageType>;
 };
 
-type MessageType = {
+export type MessageType = {
   id: string;
   message: string;
   sentByOwner: boolean;

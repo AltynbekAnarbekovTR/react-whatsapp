@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "fix-lint-errors": "eslint nx --fix"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -14,11 +15,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.4",
     "@reduxjs/toolkit": "^1.9.5",
-    "@types/firebase": "^3.2.1",
-    "axios": "^1.4.0",
-    "firebase": "^9.22.2",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.12.1"

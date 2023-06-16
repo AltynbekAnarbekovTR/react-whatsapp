@@ -1,12 +1,22 @@
-export const loadState = () => {
-  try {
-    const serializedState = localStorage.getItem("authState");
-    if (serializedState === null) {
-      return { idInstance: null, apiTokenInstance: null, ownerPhoneNum: null };
-    }
-
-    return JSON.parse(serializedState);
-  } catch (err) {
-    return undefined;
+export const getSavedAuth = () => {
+  const authState = localStorage.getItem("authState");
+  if (authState === null) {
+    return { idInstance: null, apiTokenInstance: null, ownerPhoneNum: null };
   }
+
+  return JSON.parse(authState);
+};
+
+export const saveAuth = (
+  idInstance: string,
+  apiTokenInstance: string,
+  ownerPhoneNum: string
+) => {
+  const serializedState = JSON.stringify({
+    idInstance,
+    apiTokenInstance,
+    ownerPhoneNum,
+  });
+
+  localStorage.setItem("authState", serializedState);
 };

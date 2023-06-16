@@ -8,7 +8,8 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Tooltip from "@mui/material/Tooltip";
 import SidebarChat from "./SidebarChat";
-import { useAppDispatch, useAppSelector } from "../../hooks/typedStoreHooks";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { messengerActions } from "../../store/store";
 
 function Sidebar() {
@@ -20,14 +21,15 @@ function Sidebar() {
 
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000).toString());
-    // }, [roomId]);
   }, []);
 
   return (
     <div className="sidebar">
       <div className="sidebar_header">
         <div className="sidebar_headerLeft">
-          <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+          <Avatar
+            src={`https://avatars.dicebear.com/api/adventurer-neutral/${seed}.svg`}
+          />
           {ownerPhoneNum}
         </div>
         <div className="sidebar_headerRight">
