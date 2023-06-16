@@ -6,6 +6,7 @@
     <a href="https://www.npmjs.com/package/npm/v/9.5.1" target="_blank"><img
     	alt="npm version"
     	src="https://img.shields.io/badge/npm-9.5.1-brightgreen.svg"></a>
+	 
     [![Repository Size](https://img.shields.io/github/repo-size/AnarbekovAlt/react-whatsapp)](https://github.com/AnarbekovAlt/react-whatsapp)
 
     <a href="https://badges.mit-license.org/" target="_blank"><img
