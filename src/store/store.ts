@@ -18,6 +18,17 @@ const initialState: MessengerStateType = {
   // loggedIn: false,
 };
 
+const getTime = (date: Date) => {
+  const day = date.getDate(); // Get the day (1-31)
+  const month = date.getMonth() + 1; // Get the month (0-11) and add 1 to make it 1-12
+  const year = date.getFullYear(); // Get the four-digit year
+  const hours = date.getHours(); // Get the hours (0-23)
+  const minutes = date.getMinutes(); // Get the minutes (0-59)
+
+  const formattedTime = `${day}/${month}/${year} ${hours}:${minutes}`;
+  return formattedTime;
+};
+
 export const login = createAsyncThunk(
   "messenger/login",
   async ({ idInstance, apiTokenInstance }: LoginType, thunkApi) => {
@@ -26,6 +37,8 @@ export const login = createAsyncThunk(
       `https://api.green-api.com/waInstance${idInstance}/getSettings/${apiTokenInstance}`
     );
     const data = await response.json();
+    console.log(data);
+
     const ownerPhoneNum = "+" + data.wid.replace(/\D/g, "");
     return { idInstance, apiTokenInstance, ownerPhoneNum };
   }
@@ -61,26 +74,30 @@ export const receiveMessage = createAsyncThunk(
       const response = await fetch(
         `https://api.green-api.com/waInstance${state.idInstance}/receiveNotification/${state.apiTokenInstance}`
       );
-
+      console.log("response.ok: ", response.ok);
       const data = await response.json();
-      console.log(data);
-      if (data?.receiptId) {
-        const receiptId = data?.receiptId.toString();
-        await fetch(
-          `https://api.green-api.com/waInstance${state.idInstance}/deleteNotification/${state.apiTokenInstance}/${receiptId}`,
-          {
-            method: "DELETE",
-            redirect: "follow",
-          }
-        );
-      }
-      if (data?.body.messageData.textMessageData.textMessage) {
-        const chatId = data.body.senderData.chatId.replace(/\D/g, "");
-        const id = data.receiptId.toString();
-        const message = data.body.messageData.textMessageData.textMessage;
-        console.log("{chatId, message}: ", { chatId, message });
+      console.log("received message: ", data);
+      if (data) {
+        const timestamp = data.body.timestamp;
+        // const messageTime = new Date(timestamp * 1000).toLocaleString();
+        const messageTime = getTime(new Date(timestamp * 1000));
+        if (data?.receiptId) {
+          const receiptId = data?.receiptId.toString();
+          await fetch(
+            `https://api.green-api.com/waInstance${state.idInstance}/deleteNotification/${state.apiTokenInstance}/${receiptId}`,
+            {
+              method: "DELETE",
+              redirect: "follow",
+            }
+          );
+        }
+        if (data?.body.messageData.textMessageData) {
+          const chatId = data.body.senderData.chatId.replace(/\D/g, "");
+          const receiptId = data.receiptId.toString();
+          const message = data.body.messageData.textMessageData.textMessage;
 
-        return { chatId, message };
+          return { chatId, id: receiptId, message, messageTime };
+        }
       }
     } catch (error) {
       console.log("error: ", error);
@@ -102,6 +119,11 @@ const messengerSlice = createSlice({
         state.chats.push({ chatPhoneNum: action.payload, messages: [] });
       }
     },
+    logout: (state) => {
+      state.idInstance = null;
+      state.apiTokenInstance = null;
+      localStorage.removeItem("authState");
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -114,6 +136,7 @@ const messengerSlice = createSlice({
             id: "id" + Math.random().toString(16).slice(3),
             message: action.payload.message,
             sentByOwner: true,
+            messageTime: getTime(new Date()),
           });
         }
         state.error = null;
@@ -122,17 +145,16 @@ const messengerSlice = createSlice({
         state.error = action.error;
       })
       .addCase(receiveMessage.fulfilled, (state, action) => {
-        console.log("action.payload: ", action.payload);
-        console.log("state.chats.: ", state.chats);
         if (action.payload) {
           const chatIndex = state.chats.findIndex(
-            (chat) => chat.chatPhoneNum === action.payload.chatId
+            (chat) => chat.chatPhoneNum === action.payload?.chatId
           );
           if (chatIndex > -1) {
             state.chats[chatIndex].messages.push({
-              id: "id" + Math.random().toString(16).slice(3),
+              id: action.payload.id,
               message: action.payload.message,
-              sentByOwner: true,
+              sentByOwner: false,
+              messageTime: action.payload.messageTime,
             });
           }
         }
@@ -187,6 +209,7 @@ type MessageType = {
   id: string;
   message: string;
   sentByOwner: boolean;
+  messageTime: string;
 };
 
 type SendMessageType = {

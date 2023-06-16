@@ -7,12 +7,12 @@ import "firebase/compat/firestore";
 import "firebase/compat/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCD-8RBQKpOXYzV_5E4fOJFLP_owspysGM",
-  authDomain: "react-whatsapp-b136b.firebaseapp.com",
-  projectId: "react-whatsapp-b136b",
-  storageBucket: "react-whatsapp-b136b.appspot.com",
-  messagingSenderId: "203900379532",
-  appId: "1:203900379532:web:fb7d6745c0397f4a2576a9",
+	apiKey: "AIzaSyCD-8RBQKpOXYzV_5E4fOJFLP_owspysGM",
+	authDomain: "react-whatsapp-b136b.firebaseapp.com",
+	projectId: "react-whatsapp-b136b",
+	storageBucket: "react-whatsapp-b136b.appspot.com",
+	messagingSenderId: "203900379532",
+	appId: "1:203900379532:web:fb7d6745c0397f4a2576a9",
 };
 
 // const firebaseApp = firebase.initializeApp(firebaseConfig);

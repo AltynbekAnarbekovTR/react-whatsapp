@@ -1,28 +1,24 @@
 import "./App.css";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Chat from "./components/MainChat/Chat";
 import Login from "./components/Login/Login";
-import { Routes, Route, Navigate, Outlet, useNavigate } from "react-router-dom";
-import { StateContext, useStateValue } from "./StateProvider";
-import { Container } from "@mui/material";
+import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import { useAppSelector } from "./hooks/typedStoreHooks";
-import { BrowserRouter as Router } from "react-router-dom";
 import PrivateRoutes from "./components/PrivateRoutes/PrivateRoutes";
-import NotFound from "./components/NotFound/NotFound";
 import AppLayout from "./components/Layouts/AppLayout";
 import MessengerLayout from "./components/Layouts/MessengerLayout";
-import { Button } from "react-bootstrap";
 import { selectLoggedIn } from "./store/store";
 
 function App() {
+  console.log("window.location.href: ", window.location.href);
+
   const loggedIn = useAppSelector(selectLoggedIn);
   const error = useAppSelector((state) => state.error);
   const idInstance = useAppSelector((state) => state.idInstance);
   const apiTokenInstance = useAppSelector((state) => state.apiTokenInstance);
   const ownerPhoneNum = useAppSelector((state) => state.ownerPhoneNum);
   const chats = useAppSelector((state) => state.chats);
-  console.log("chats in App: ", chats);
 
   const navigate = useNavigate();
 
@@ -53,7 +49,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<MessengerLayout />}>
           <Route element={<PrivateRoutes />}>
-            <Route
+            {/* <Route
               path="rooms/*"
               element={
                 <>
@@ -63,7 +59,20 @@ function App() {
                   </Routes>
                 </>
               }
-            />
+            /> */}
+            <Route
+              path="rooms/*"
+              element={
+                <>
+                  <Sidebar />
+                  <Outlet />
+                </>
+              }
+            >
+              {chats.length && (
+                <Route path=":currentChatNum" element={<Chat />} />
+              )}
+            </Route>
           </Route>
         </Route>
         {/* <Route path="/*" element={<NotFound />} /> */}

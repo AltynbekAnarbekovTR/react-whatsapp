@@ -20,14 +20,11 @@ function Chat() {
   const [message, setInput] = useState("");
   const [seed, setSeed] = useState("");
   const { currentChatNum } = useParams();
-  const idInstance = useAppSelector((state) => state.idInstance);
-  const apiTokenInstance = useAppSelector((state) => state.apiTokenInstance);
   const chats = useAppSelector((state) => state.chats);
   const currentChat = chats.find(
     (chat) => chat.chatPhoneNum === currentChatNum
   );
-  console.log("currentChat: ", currentChat);
-
+  console.log("Here1");
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -35,22 +32,15 @@ function Chat() {
     // }, [roomId]);
   }, []);
 
-  const recieveMessageHandler = async () => {
-    dispatch(receiveMessage());
-    console.log("currentChat: ", currentChat);
-  };
-
   useEffect(() => {
-    const interal = setInterval(() => {
-      console.log("receiveMessage");
+    console.log("Here2");
 
+    const interval = setInterval(() => {
       dispatch(receiveMessage());
-    }, 5000);
-
-    return () => {
-      clearInterval(interal);
-    };
-    // dispatch(receiveMessage());
+      return () => clearInterval(interval);
+    }, 2000);
+    dispatch(receiveMessage());
+    return () => clearInterval(interval);
   }, []);
 
   const sendMessageHandler = (e: React.FormEvent) => {
@@ -68,7 +58,8 @@ function Chat() {
         <div className="chat_headerInfo">
           <h3 className="chat-room-name">
             {/* {roomName} */}
-            Room Name
+            {/* Room Name */}
+            {currentChatNum}
           </h3>
           <p className="chat-room-last-seen">
             Last seen{" "}
@@ -90,24 +81,27 @@ function Chat() {
         </div>
       </div>
       <div className="chat_body">
-        <Button onClick={recieveMessageHandler}>Recieve message</Button>
+        {/* <Button onClick={recieveMessageHandler}>Recieve message</Button> */}
         {currentChat &&
           currentChat.messages.map((message) => (
-            <p
+            <div
+              key={message.id}
               className={`chat_message ${
                 message.sentByOwner && "chat_receiver"
               }`}
             >
               <span className="chat_name">
                 {/* {message.name} */}
-                Sender
+                {/* Sender */}
+                {/* {currentChatNum} */}
               </span>
               {message.message}
-              <span className="chat_timestemp">
+              <p className="chat_timestamp">
                 {/* {new Date(message.timestamp?.toDate()).toUTCString()} */}
-                Date
-              </span>
-            </p>
+                {/* Date */}
+                {message.messageTime}
+              </p>
+            </div>
           ))}
       </div>
       <div className="chat_footer">
