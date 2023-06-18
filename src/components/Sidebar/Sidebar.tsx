@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
 import { Avatar, IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import ChatIcon from "@mui/icons-material/Chat";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Tooltip from "@mui/material/Tooltip";
 import SidebarChat from "./SidebarChat";
@@ -13,11 +13,19 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { messengerActions } from "../../store/store";
 
 function Sidebar() {
+  const [input, setInput] = useState("");
   const ownerPhoneNum = useAppSelector((state) => state.ownerPhoneNum);
   const chats = useAppSelector((state) => state.chats);
   const [seed, setSeed] = useState("");
 
   const dispatch = useAppDispatch();
+
+  const createChat = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (input.length) {
+      dispatch(messengerActions.addChat({ phoneNumInput: input }));
+    }
+  };
 
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000).toString());
@@ -49,14 +57,26 @@ function Sidebar() {
           </Tooltip>
         </div>
       </div>
-      <div className="sidebar_search">
+      <form onSubmit={createChat} className="sidebar_search">
         <div className="sidebar_searchContainer">
-          <SearchOutlinedIcon />
-          <input disabled type="text" placeholder="Search or start new chat" />
+          <div className="sidebar_phoneInput">
+            <span>+</span>
+            <input
+              value={input}
+              pattern="[0-9]*"
+              title="*Only numbers*"
+              placeholder="Phone number"
+              onChange={(e) => {
+                setInput(e.target.value);
+              }}
+            />
+          </div>
+          <IconButton type="submit" size="small">
+            <AddIcon className="plus" />
+          </IconButton>
         </div>
-      </div>
+      </form>
       <div className="sidebar_chats">
-        <SidebarChat addNewChat={true} />
         {chats.map((chat) => {
           return (
             <SidebarChat key={chat.chatPhoneNum} phoneNum={chat.chatPhoneNum} />

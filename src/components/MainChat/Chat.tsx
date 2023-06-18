@@ -15,7 +15,6 @@ import "./Chat.css";
 
 const Chat = () => {
   const [message, setInput] = useState("");
-
   const { currentChatNum } = useParams();
   const chats = useAppSelector((state) => state.chats);
   const pending = useAppSelector((state) => state.pending);
@@ -49,7 +48,7 @@ const Chat = () => {
       <div className="chat_header">
         <Avatar src={avatarUrl} />
         <div className="chat_headerInfo">
-          <h3 className="chat-room-name">{currentChatNum}</h3>
+          <h3 className="chat-room-name">{"+" + currentChatNum}</h3>
           <p className="chat-room-last-seen">Last seen </p>
         </div>
         <div className="chat_headerRight">

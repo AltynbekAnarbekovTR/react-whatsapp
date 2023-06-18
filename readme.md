@@ -8,16 +8,13 @@
     	src="https://img.shields.io/badge/npm-9.5.1-brightgreen.svg"></a>
     <a href="#"><img
     	alt="size of repository"
-    	src="https://img.shields.io/github/size/AnarbekovAlt/react-whatsapp/https://github.com/AnarbekovAlt/%7Brepository%7D"></a>
+    	src="https://img.shields.io/badge/Size-687%20KB-yellowgreen.svg"></a>
     <a href="https://badges.mit-license.org/" target="_blank"><img
     	alt="licence"
     	src="https://img.shields.io/packagist/l/doctrine/orm.svg">
 	</a>
-    <a href="#" target="_blank"><img
-    	alt="Javascript percentage"
-    	src="https://img.shields.io/badge/Javascript-71.2%25-yellow.svg">
-	</a>
 </p>
+</div>
 
 ## Features
 
@@ -27,7 +24,7 @@ Green API
 </a>
 
 - Design of the app is very similar to whatsapp web
-- Login using your idInstance and apiTokenInstance
+- Login using your idInstance and apiTokenInstance from Green API
 - Create a chat by writing a phone number you want to chat with
 - Send a message and it will be sent to whatsapp number you added. Also receive messages from that number
 - You login data is saved in localStorage so that you don't have to login again every time you visti the page. Saved login data is deleted on logout.

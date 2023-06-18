@@ -6,6 +6,7 @@ import {
   createSelector,
 } from "@reduxjs/toolkit";
 import { getSavedAuth, saveAuth } from "../utils/localStorage-utils";
+import { getTime } from "../utils/getTime";
 
 const { idInstance, apiTokenInstance, ownerPhoneNum } = getSavedAuth();
 
@@ -16,17 +17,6 @@ const initialState: MessengerStateType = {
   error: null,
   ownerPhoneNum,
   pending: false,
-};
-
-const getTime = (date: Date) => {
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-
-  const formattedTime = `${day}/${month}/${year} ${hours}:${minutes}`;
-  return formattedTime;
 };
 
 export const login = createAsyncThunk(
