@@ -3,15 +3,23 @@ import { Button, TextField } from "@mui/material";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { login } from "../../store/store";
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const dispatch = useAppDispatch();
   const [idInstance, setIdInstance] = useState("");
   const [apiTokenInstance, setApiTokenInstance] = useState("");
 
+  const nav = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(login({ idInstance, apiTokenInstance }));
+    try {
+      await dispatch(login({ idInstance, apiTokenInstance }));
+      nav("/rooms");
+    } catch (e) {
+      alert(e);
+    }
   };
 
   return (

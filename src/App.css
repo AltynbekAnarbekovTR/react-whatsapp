@@ -10,7 +10,7 @@
   background-color: #ededed;
   height: 100vh;
   width: 100vw;
-  box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 1);
+  box-shadow: 0 6px 18px rgba(11, 20, 26, 0.05);
 }
 .green-line {
   background-color: green;

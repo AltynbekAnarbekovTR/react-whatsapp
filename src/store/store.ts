@@ -5,7 +5,7 @@ import {
   SerializedError,
   createSelector,
 } from "@reduxjs/toolkit";
-import { getSavedAuth, saveAuth } from "../utils/localStorage-utils";
+import { getSavedAuth, saveAuth } from "../utils/localStorage";
 import { getTime } from "../utils/getTime";
 
 const { idInstance, apiTokenInstance, ownerPhoneNum } = getSavedAuth();
@@ -22,12 +22,18 @@ const initialState: MessengerStateType = {
 export const login = createAsyncThunk(
   "messenger/login",
   async ({ idInstance, apiTokenInstance }: LoginType) => {
-    const response = await fetch(
-      `https:api.green-api.com/waInstance${idInstance}/getSettings/${apiTokenInstance}`
-    );
-    const data = await response.json();
-    const ownerPhoneNum = "+" + data.wid.replace(/\D/g, "");
-    return { idInstance, apiTokenInstance, ownerPhoneNum };
+    try {
+      const response = await fetch(
+        `https:api.green-api.com/waInstance${idInstance}/getSettings/${apiTokenInstance}`
+      );
+      const data = await response.json();
+      const ownerPhoneNum = "+" + data.wid.replace(/\D/g, "");
+      return { idInstance, apiTokenInstance, ownerPhoneNum };
+    } catch (e) {
+      console.log("error: ", e);
+
+      alert(e);
+    }
   }
 );
 
@@ -159,14 +165,16 @@ const messengerSlice = createSlice({
         state.pending = false;
       })
       .addCase(login.fulfilled, (state, action) => {
-        const idInstance = action.payload.idInstance;
-        const apiTokenInstance = action.payload.apiTokenInstance;
-        const ownerPhoneNum = action.payload.ownerPhoneNum;
-        state.idInstance = idInstance;
-        state.apiTokenInstance = apiTokenInstance;
-        state.ownerPhoneNum = ownerPhoneNum;
-        saveAuth(idInstance, apiTokenInstance, ownerPhoneNum);
-        state.error = null;
+        if (action.payload) {
+          const idInstance = action.payload.idInstance;
+          const apiTokenInstance = action.payload.apiTokenInstance;
+          const ownerPhoneNum = action.payload.ownerPhoneNum;
+          state.idInstance = idInstance;
+          state.apiTokenInstance = apiTokenInstance;
+          state.ownerPhoneNum = ownerPhoneNum;
+          saveAuth(idInstance, apiTokenInstance, ownerPhoneNum);
+          state.error = null;
+        }
       })
       .addCase(login.rejected, (state, action) => {
         state.error = action.error;
@@ -183,7 +191,8 @@ const selectApiTokenInstance = (state: RootStateType) => state.apiTokenInstance;
 
 export const selectLoggedIn = createSelector(
   [selectIdInstance, selectApiTokenInstance],
-  (idInstance, apiTokenInstance) => idInstance && apiTokenInstance
+  (idInstance, apiTokenInstance) =>
+    idInstance !== null && apiTokenInstance !== null
 );
 
 export type RootStateType = ReturnType<typeof store.getState>;
