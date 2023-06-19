@@ -17,7 +17,6 @@ function App() {
   const error = useAppSelector((state) => state.error);
   const chats = useAppSelector((state) => state.chats);
   const nav = useNavigate();
-  console.log("loggedIN: ", loggedIn);
 
   useEffect(() => {
     if (error) {

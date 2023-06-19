@@ -5,8 +5,6 @@ import { selectLoggedIn } from "../../store/store";
 
 const PrivateRoutes = () => {
   const loggedIn = useAppSelector(selectLoggedIn);
-  const pending = useAppSelector((state) => state.pending);
-  console.log("Private Route");
 
   return loggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
