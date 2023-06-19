@@ -10,7 +10,7 @@ import Tooltip from "@mui/material/Tooltip";
 import SidebarChat from "./SidebarChat";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { messengerActions } from "../../store/store";
+import { ChatType, messengerActions } from "../../store/store";
 
 function Sidebar() {
   const [input, setInput] = useState("");
@@ -77,7 +77,7 @@ function Sidebar() {
         </div>
       </form>
       <div className="sidebar_chats">
-        {chats.map((chat) => {
+        {chats.map((chat: ChatType) => {
           return (
             <SidebarChat key={chat.chatPhoneNum} phoneNum={chat.chatPhoneNum} />
           );

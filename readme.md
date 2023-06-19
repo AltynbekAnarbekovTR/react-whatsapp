@@ -16,9 +16,15 @@
 </p>
 </div>
 
+## How to run
+
+- clone repository
+- run npm i
+- run npm run dev
+
 ## Features
 
-In order to use the app you must be get idInstance and apiTokenInstance from Green API:
+In order to use the app you must be get an idInstance and an apiTokenInstance from Green API:
 <a href="https://green-api.com/" target="_blank">
 Green API
 </a>

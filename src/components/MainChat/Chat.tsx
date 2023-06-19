@@ -10,7 +10,12 @@ import {
 } from "@mui/icons-material";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { MessageType, receiveMessage, sendMessage } from "../../store/store";
+import {
+  ChatType,
+  MessageType,
+  receiveMessage,
+  sendMessage,
+} from "../../store/store";
 import "./Chat.css";
 
 const Chat = () => {
@@ -19,7 +24,7 @@ const Chat = () => {
   const chats = useAppSelector((state) => state.chats);
   const pending = useAppSelector((state) => state.pending);
   const currentChat = chats.find(
-    (chat) => chat.chatPhoneNum === currentChatNum
+    (chat: ChatType) => chat.chatPhoneNum === currentChatNum
   );
   const avatarUrl = currentChat?.avatarUrl;
 
