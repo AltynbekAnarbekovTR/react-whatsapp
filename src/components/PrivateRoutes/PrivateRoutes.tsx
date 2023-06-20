@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import { selectLoggedIn } from "../../store/store";
+import { selectLoggedIn } from "../../store/selectLoggedIn";
 
 const PrivateRoutes = () => {
   const loggedIn = useAppSelector(selectLoggedIn);

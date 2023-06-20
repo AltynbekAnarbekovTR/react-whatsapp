@@ -191,15 +191,6 @@ const store = configureStore({ reducer: messengerSlice.reducer });
 export const messengerActions = messengerSlice.actions;
 export default store;
 
-const selectIdInstance = (state: RootStateType) => state.idInstance;
-const selectApiTokenInstance = (state: RootStateType) => state.apiTokenInstance;
-
-export const selectLoggedIn = createSelector(
-  [selectIdInstance, selectApiTokenInstance],
-  (idInstance, apiTokenInstance) =>
-    idInstance !== null && apiTokenInstance !== null
-);
-
 export type RootStateType = ReturnType<typeof store.getState>;
 export type AppDispatchType = typeof store.dispatch;
 

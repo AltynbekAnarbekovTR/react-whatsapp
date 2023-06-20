@@ -7,7 +7,7 @@ import Login from "./components/Login/Login";
 import PrivateRoutes from "./components/PrivateRoutes/PrivateRoutes";
 import AppLayout from "./components/Layouts/AppLayout";
 import MessengerLayout from "./components/Layouts/MessengerLayout";
-import { selectLoggedIn } from "./store/store";
+import { selectLoggedIn } from "./store/selectLoggedIn";
 import "./App.css";
 import NotFound from "./components/NotFound/NotFound";
 import DummyChat from "./components/DummyChat/DummyChat";

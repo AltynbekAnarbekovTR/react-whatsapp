@@ -37,7 +37,7 @@ Green API
 
 ## Live Website
 
-https:// :zap:
+https://react-whatsapp-greenapi.netlify.app :zap:
 
 ## Author
 
