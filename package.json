@@ -7,15 +7,15 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "fix-lint-errors": "eslint nx --fix",
-    "lint": "eslint src/"
+    "format": "prettier --write src",
+    "lint": "eslint src/",
+    "prepare": "husky install"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.4",
     "@reduxjs/toolkit": "^1.9.5",
+    "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.0",
@@ -33,6 +33,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "husky": "^8.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.2.0"
   }

@@ -3,7 +3,7 @@ import { Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import "./SidebarChat.css";
-import { ChatType } from "../../store/store";
+import { ChatType } from "../../store/messengerSlice";
 
 type SidebarChatProps = {
   id?: string;
@@ -12,7 +12,7 @@ type SidebarChatProps = {
 };
 
 function SidebarChat({ id, phoneNum }: SidebarChatProps) {
-  const chats = useAppSelector((state) => state.chats);
+  const chats = useAppSelector((state) => state.messenger.chats);
   const currentSidebarChat = chats.find(
     (chat: ChatType) => chat.chatPhoneNum === phoneNum
   );

@@ -14,8 +14,8 @@ import DummyChat from "./components/DummyChat/DummyChat";
 
 function App() {
   const loggedIn = useAppSelector(selectLoggedIn);
-  const error = useAppSelector((state) => state.error);
-  const chats = useAppSelector((state) => state.chats);
+  const error = useAppSelector((state) => state.messenger.error);
+  const chats = useAppSelector((state) => state.messenger.chats);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function App() {
             loggedIn ? <Navigate to="/rooms" /> : <Navigate to="/login" />
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route path="login" element={<Login />} />
         <Route element={<MessengerLayout />}>
           <Route element={<PrivateRoutes />}>
             <Route

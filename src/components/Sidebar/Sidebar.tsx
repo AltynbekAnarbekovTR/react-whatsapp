@@ -10,12 +10,13 @@ import Tooltip from "@mui/material/Tooltip";
 import SidebarChat from "./SidebarChat";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { ChatType, messengerActions } from "../../store/store";
+import { ChatType, messengerActions } from "../../store/messengerSlice";
+import { authActions } from "../../store/authSlice";
 
 function Sidebar() {
   const [input, setInput] = useState("");
-  const ownerPhoneNum = useAppSelector((state) => state.ownerPhoneNum);
-  const chats = useAppSelector((state) => state.chats);
+  const ownerPhoneNum = useAppSelector((state) => state.auth.ownerPhoneNum);
+  const chats = useAppSelector((state) => state.messenger.chats);
   const [seed, setSeed] = useState("");
 
   const dispatch = useAppDispatch();
@@ -51,7 +52,7 @@ function Sidebar() {
             <MoreVertIcon />
           </IconButton>
           <Tooltip title="Logout">
-            <IconButton onClick={() => dispatch(messengerActions.logout())}>
+            <IconButton onClick={() => dispatch(authActions.logout())}>
               <LogoutIcon style={{ color: "#e26464" }} />
             </IconButton>
           </Tooltip>

@@ -10,21 +10,16 @@ import {
 } from "@mui/icons-material";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import {
-  ChatType,
-  MessageType,
-  receiveMessage,
-  sendMessage,
-} from "../../store/store";
+import { messengerAsyncActions } from "../../store/messengerSlice";
 import "./Chat.css";
 
 const Chat = () => {
   const [message, setInput] = useState("");
   const { currentChatNum } = useParams();
-  const chats = useAppSelector((state) => state.chats);
-  const pending = useAppSelector((state) => state.pending);
+  const chats = useAppSelector((state) => state.messenger.chats);
+  const pending = useAppSelector((state) => state.messenger.pending);
   const currentChat = chats.find(
-    (chat: ChatType) => chat.chatPhoneNum === currentChatNum
+    (chat) => chat.chatPhoneNum === currentChatNum
   );
   const avatarUrl = currentChat?.avatarUrl;
 
@@ -34,7 +29,7 @@ const Chat = () => {
     let interval: NodeJS.Timeout;
     if (!pending) {
       interval = setInterval(() => {
-        dispatch(receiveMessage());
+        dispatch(messengerAsyncActions.receiveMessage());
       }, 1000);
     }
     return () => clearInterval(interval);
@@ -43,7 +38,12 @@ const Chat = () => {
   const sendMessageHandler = (e: React.FormEvent) => {
     e.preventDefault();
     if (currentChatNum && message.length) {
-      dispatch(sendMessage({ currentChatNumber: currentChatNum, message }));
+      dispatch(
+        messengerAsyncActions.sendMessage({
+          currentChatNumber: currentChatNum,
+          message,
+        })
+      );
     }
     setInput("");
   };
@@ -70,7 +70,7 @@ const Chat = () => {
       </div>
       <div className="chat_body">
         {currentChat &&
-          currentChat.messages.map((message: MessageType) => (
+          currentChat.messages.map((message) => (
             <div
               key={message.id}
               className={`chat_message ${

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { login } from "../../store/store";
+import { authAsyncActions } from "../../store/authSlice";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ function Login() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await dispatch(login({ idInstance, apiTokenInstance }));
+      await dispatch(authAsyncActions.login({ idInstance, apiTokenInstance }));
       nav("/rooms");
     } catch (e) {
       alert(e);
