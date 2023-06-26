@@ -17,8 +17,8 @@
 </div>
 
 <p float="left">
-  <img src="https://github.com/AnarbekovAlt/react-whatsapp/assets/62358513/5bf95d96-abdd-4039-9597-e63b195dd3af" width="400" height="175"/>
-  <img src="https://github.com/AnarbekovAlt/react-typing/assets/62358513/5cec9fec-ba75-4cc4-871c-caf8606c5d5a" width="400" height="175"/>
+  <img src="https://github.com/AnarbekovAlt/react-whatsapp/assets/62358513/5bf95d96-abdd-4039-9597-e63b195dd3af" width="400"/>
+  <img src="https://github.com/AnarbekovAlt/react-typing/assets/62358513/5cec9fec-ba75-4cc4-871c-caf8606c5d5a" width="400"/>
 </p>
 
 
