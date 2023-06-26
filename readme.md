@@ -16,8 +16,7 @@
 </p>
 </div>
 
-<p float="left">
- 
+<p>
   <img src="https://github.com/AnarbekovAlt/react-typing/assets/62358513/5cec9fec-ba75-4cc4-871c-caf8606c5d5a" width="400"/>
 </p>
 
