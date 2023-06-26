@@ -23,6 +23,9 @@
 <p>
 <div style="width: 200px; height: 150px; overflow: hidden;">
   <img src="https://github.com/AnarbekovAlt/react-whatsapp/assets/62358513/5bf95d96-abdd-4039-9597-e63b195dd3af" alt="Image" style="width: 100%; height: 100%; object-fit: cover;">
+  
+</div>
+<div style="width: 200px; height: 150px; overflow: hidden;">
   <img src="https://github.com/AnarbekovAlt/react-typing/assets/62358513/5cec9fec-ba75-4cc4-871c-caf8606c5d5a" alt="Image" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 </p>
