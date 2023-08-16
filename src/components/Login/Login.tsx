@@ -3,7 +3,7 @@ import { Button, TextField } from "@mui/material";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { authAsyncActions } from "../../store/authSlice";
 import "./Login.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const dispatch = useAppDispatch();
@@ -53,6 +53,13 @@ function Login() {
             Войти
           </Button>
         </form>
+        <Link
+          target="_blank"
+          className="link-to-api"
+          to="https://green-api.com/"
+        >
+          Get token in Green API
+        </Link>
       </div>
     </div>
   );

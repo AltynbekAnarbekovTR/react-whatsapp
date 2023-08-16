@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { authReducer } from "./authSlice";
 import { messengerReducer } from "./messengerSlice";
+import { appReducer } from "./appSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
   messenger: messengerReducer,
+  app: appReducer,
 });
 
 const store = configureStore({

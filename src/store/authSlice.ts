@@ -38,6 +38,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.idInstance = null;
       state.apiTokenInstance = null;
+      state.ownerPhoneNum = null;
       localStorage.removeItem("authState");
     },
   },
@@ -45,12 +46,9 @@ const authSlice = createSlice({
     builder
       .addCase(login.fulfilled, (state, action) => {
         if (action.payload) {
-          const idInstance = action.payload.idInstance;
-          const apiTokenInstance = action.payload.apiTokenInstance;
-          const ownerPhoneNum = action.payload.ownerPhoneNum;
-          state.idInstance = idInstance;
-          state.apiTokenInstance = apiTokenInstance;
-          state.ownerPhoneNum = ownerPhoneNum;
+          state.idInstance = action.payload.idInstance;
+          state.apiTokenInstance = action.payload.apiTokenInstance;
+          state.ownerPhoneNum = action.payload.ownerPhoneNum;
           saveAuth(idInstance, apiTokenInstance, ownerPhoneNum);
           state.error = null;
         }

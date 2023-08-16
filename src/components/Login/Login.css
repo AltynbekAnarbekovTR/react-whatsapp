@@ -6,6 +6,7 @@
 }
 .login_container {
   padding: 100px;
+  padding-bottom: 50px;
   text-align: center;
   background-color: whitesmoke;
   border-radius: 10px;
@@ -21,4 +22,10 @@
   text-transform: inherit !important;
   background-color: #0a8d48 !important;
   color: white;
+}
+.link-to-api {
+  display: block;
+  margin-top: 60px;
+  color: blue;
+  text-decoration: underline !important;
 }
